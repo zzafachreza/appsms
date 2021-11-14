@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "392638971628",
+    "project_id": "appsms-7b6b4",
+    "storage_bucket": "appsms-7b6b4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:392638971628:android:44a7e66f36430c0a5eefc9",
+        "android_client_info": {
+          "package_name": "com.appsms"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "392638971628-pem5qrisenp11u2tmql260id401uup0q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDULazr4gb07Ea0W7UB9Y3dJiyTkiagGTc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "392638971628-pem5qrisenp11u2tmql260id401uup0q.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
