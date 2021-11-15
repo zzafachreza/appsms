@@ -11,6 +11,7 @@ export default function MyInput({
   label,
   iconname,
   onChangeText,
+  onSubmitEditing,
   value,
   borderColor = colors.primary,
   keyboardType,
@@ -60,6 +61,7 @@ export default function MyInput({
       <TextInput
         autoFocus={autoFocus}
         onFocus={onFocus}
+        onSubmitEditing={onSubmitEditing}
         placeholder={placeholder}
         secureTextEntry={secureTextEntry}
         keyboardType={keyboardType}

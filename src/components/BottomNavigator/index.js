@@ -60,11 +60,7 @@ export default function BottomNavigator({state, descriptors, navigation}) {
         } else if (label === 'Account') {
           iconName = 'person';
         } else if (label === 'Transaksi') {
-          iconName = 'newspaper-outline';
-        } else if (label === 'ListRedeem') {
-          iconName = 'bookmarks-outline';
-        } else if (label === 'Kontrak') {
-          iconName = 'bookmarks-outline';
+          iconName = 'list';
         }
 
         return (
@@ -90,33 +86,26 @@ export default function BottomNavigator({state, descriptors, navigation}) {
               }}>
               <View
                 style={{
-                  position: iconName === 'cart' ? 'absolute' : 'relative',
+                  position: 'relative',
                   backgroundColor: colors.primary,
 
-                  position: iconName === 'cart' ? 'absolute' : 'relative',
-                  borderColor: iconName === 'cart' ? 'white' : 'white',
-                  borderRadius: iconName === 'cart' ? 50 : 0,
-                  width: iconName === 'cart' ? 90 : 80,
-                  marginBottom: iconName === 'cart' ? 0 : 0,
-                  bottom: iconName === 'cart' ? -45 : 0,
-                  height: iconName === 'cart' ? 90 : 50,
+                  position: 'relative',
+                  borderColor: 'white',
+                  borderRadius: 0,
+                  width: 80,
+                  marginBottom: 0,
+                  bottom: 0,
+                  height: 50,
                   justifyContent: 'center',
                   alignItems: 'center',
                 }}>
-                {iconName === 'cart' ? (
-                  <Icon
-                    name={iconName}
-                    type="ionicon"
-                    color={isFocused ? colors.secondary : colors.white}
-                  />
-                ) : (
-                  <Icon
-                    name={iconName}
-                    type="ionicon"
-                    size={windowWidth / 20}
-                    color={isFocused ? colors.secondary : colors.white}
-                  />
-                )}
+                <Icon
+                  name={isFocused ? `${iconName}` : `${iconName}-outline`}
+                  type="ionicon"
+                  size={windowWidth / 20}
+                  color={isFocused ? colors.white : colors.white}
+                />
+
                 <Text
                   style={{
                     fontSize: windowWidth / 45,
@@ -126,10 +115,10 @@ export default function BottomNavigator({state, descriptors, navigation}) {
                         : !isFocused && iconName == 'cart'
                         ? 'white'
                         : isFocused
-                        ? colors.secondary
+                        ? colors.white
                         : colors.white,
                   }}>
-                  {label == 'ListRedeem' ? 'Redeem' : label}
+                  {iconName == 'list' ? 'Data' : label}
                 </Text>
               </View>
             </View>

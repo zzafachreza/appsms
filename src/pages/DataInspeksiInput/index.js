@@ -8,7 +8,7 @@ import {
   ScrollView,
   Image,
 } from 'react-native';
-
+import LottieView from 'lottie-react-native';
 import DatePicker from 'react-native-date-picker';
 import {MyButton, MyInput, MyGap, MyPicker} from '../../components';
 import {colors} from '../../utils/colors';
@@ -16,12 +16,11 @@ import {fonts} from '../../utils/fonts';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import {showMessage} from 'react-native-flash-message';
 import axios from 'axios';
+import {getData} from '../../utils/localStorage';
 
 export default function DataInspeksiInput({navigation, route}) {
-  const item = route.params;
+  // const item = route.params;
   const [date, setDate] = useState(new Date());
-  const [data, setData] = useState({});
-
   const Today = new Date();
   const dd = String(Today.getDate()).padStart(2, '0');
   const mm = String(Today.getMonth() + 1).padStart(2, '0'); //January is 0!
@@ -30,9 +29,24 @@ export default function DataInspeksiInput({navigation, route}) {
   const menit = String(Today.getMinutes() + 1).padStart(2, '0');
   const detik = String(Today.getUTCSeconds() + 1).padStart(2, '0');
   const today = `${yyyy}-${mm}-${dd}`;
+  const [data, setData] = useState({
+    tanggal: `${yyyy}-${mm}-${dd}`,
+    tim: null,
+    kecamatan: null,
+    kelurahan: null,
+    jalan: null,
+    jalan_panjang: null,
+    jalan_lebar: null,
+    drainase_panjang: null,
+    drainase_lebar: null,
+    foto1: null,
+    foto2: null,
+    foto3: null,
+    foto4: null,
+    foto5: null,
+  });
 
   const [loading, setLoading] = useState(false);
-  console.log('pembayaran', data);
   const [foto1, setfoto1] = useState('https://zavalabs.com/nogambar.jpg');
   const [foto2, setfoto2] = useState('https://zavalabs.com/nogambar.jpg');
   const [foto3, setfoto3] = useState('https://zavalabs.com/nogambar.jpg');
@@ -42,6 +56,8 @@ export default function DataInspeksiInput({navigation, route}) {
   const options = {
     includeBase64: true,
     quality: 0.5,
+    maxWidth: 500,
+    maxHeight: 500,
   };
 
   const getCamera = xyz => {
@@ -57,16 +73,9 @@ export default function DataInspeksiInput({navigation, route}) {
           case 1:
             setData({
               ...data,
-              foto: `data:${response.type};base64, ${response.base64}`,
+              foto1: `data:${response.type};base64, ${response.base64}`,
             });
             setfoto1(`data:${response.type};base64, ${response.base64}`);
-            break;
-          case 2:
-            setData({
-              ...data,
-              fot2: `data:${response.type};base64, ${response.base64}`,
-            });
-            setfoto2(`data:${response.type};base64, ${response.base64}`);
             break;
           case 2:
             setData({
@@ -114,17 +123,11 @@ export default function DataInspeksiInput({navigation, route}) {
           case 1:
             setData({
               ...data,
-              foto: `data:${response.type};base64, ${response.base64}`,
+              foto1: `data:${response.type};base64, ${response.base64}`,
             });
             setfoto1(`data:${response.type};base64, ${response.base64}`);
             break;
-          case 2:
-            setData({
-              ...data,
-              fot2: `data:${response.type};base64, ${response.base64}`,
-            });
-            setfoto2(`data:${response.type};base64, ${response.base64}`);
-            break;
+
           case 2:
             setData({
               ...data,
@@ -159,21 +162,29 @@ export default function DataInspeksiInput({navigation, route}) {
   };
 
   const sendServer = () => {
-    console.log('data yang akan dirikin', data);
+    setLoading(true);
+    // console.log('data yang akan dirikin', data);
     axios
-      .post('https://zavalabs.com/sininja/api/inspeksi_add.php', data)
+      .post('https://zavalabs.com/sms/api/survey_add.php', data)
       .then(res => {
         console.log(res);
+        alert('Data Berhasil Disimpan !');
+        navigation.replace('MainApp');
       });
-    // alert('ajaja');
-    navigation.replace('Success2', {
-      messege: 'Data Berhasil Di Simpan !',
-    });
+    // //
+    // navigation.replace('Success2', {
+    //   messege: 'Data Berhasil Di Simpan !',
+    // });
   };
 
-  const [ruas, setRuas] = useState([]);
-
-  useEffect(() => {}, []);
+  useEffect(() => {
+    getData('user').then(res => {
+      setData({
+        ...data,
+        id_member: res.id,
+      });
+    });
+  }, []);
 
   const UploadFoto = ({onPress1, onPress2, label, foto}) => {
     return (
@@ -200,9 +211,9 @@ export default function DataInspeksiInput({navigation, route}) {
           }}
           style={{
             width: '100%',
-            aspectRatio: 1.5,
+            aspectRatio: 1,
+            resizeMode: 'contain',
           }}
-          resizeMode="center"
         />
         <View
           style={{
@@ -240,7 +251,17 @@ export default function DataInspeksiInput({navigation, route}) {
   return (
     <SafeAreaView style={{padding: 10}}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <MyInput value={today} label="Tanggal" iconname="calendar" />
+        <MyInput
+          value={today}
+          label="Tanggal"
+          iconname="calendar"
+          onChangeText={val =>
+            setData({
+              ...data,
+              tanggal: val,
+            })
+          }
+        />
 
         <MyGap jarak={10} />
         <MyInput
@@ -274,7 +295,7 @@ export default function DataInspeksiInput({navigation, route}) {
               kelurahan: val,
             });
           }}
-          label="kelurahan"
+          label="Desa/kelurahan"
           iconname="home"
           value={data.kelurahan}
         />
@@ -301,7 +322,7 @@ export default function DataInspeksiInput({navigation, route}) {
               jalan_panjang: val,
             });
           }}
-          label="Panjang Jalan"
+          label="Panjang Jalan ( Meter )"
           iconname="navigate"
         />
         <MyGap jarak={10} />
@@ -314,7 +335,7 @@ export default function DataInspeksiInput({navigation, route}) {
               jalan_lebar: val,
             });
           }}
-          label="Lebar Jalan"
+          label="Lebar Jalan ( Meter )"
           iconname="navigate"
         />
 
@@ -328,7 +349,7 @@ export default function DataInspeksiInput({navigation, route}) {
               drainase_panjang: val,
             });
           }}
-          label="Panjang Drainase"
+          label="Panjang Drainase ( Meter )"
           iconname="navigate"
         />
 
@@ -342,7 +363,7 @@ export default function DataInspeksiInput({navigation, route}) {
               drainase_lebar: val,
             });
           }}
-          label="Lebar Drainase"
+          label="Lebar Drainase ( Meter )"
           iconname="navigate"
         />
 
@@ -389,6 +410,17 @@ export default function DataInspeksiInput({navigation, route}) {
           warna={colors.secondary}
         />
       </ScrollView>
+      {loading && (
+        <LottieView
+          source={require('../../assets/animation.json')}
+          autoPlay
+          loop
+          style={{
+            flex: 1,
+            backgroundColor: colors.primary,
+          }}
+        />
+      )}
     </SafeAreaView>
   );
 }

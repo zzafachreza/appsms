@@ -4,266 +4,315 @@ import {
   Text,
   View,
   SafeAreaView,
-  FlatList,
-  ImageBackground,
+  ScrollView,
   Image,
+  Alert,
+  FlatList,
+  TextInput,
 } from 'react-native';
-import axios from 'axios';
-import {fonts, windowWidth} from '../../utils/fonts';
+import {tan} from 'react-native-reanimated';
 import {colors} from '../../utils/colors';
-import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
+import {fonts, windowWidth, windowHeight} from '../../utils/fonts';
+import axios from 'axios';
+import {getData} from '../../utils/localStorage';
+import PushNotification from 'react-native-push-notification';
+import messaging from '@react-native-firebase/messaging';
+import {TouchableOpacity} from 'react-native-gesture-handler';
+import {MyButton, MyGap, MyInput} from '../../components';
+import {useIsFocused} from '@react-navigation/native';
+import {Icon} from 'react-native-elements';
 
-export default function ListDetail({navigation, route}) {
-  const item = route.params;
-  navigation.setOptions({title: item.kode});
-  const [data, setData] = useState([]);
+export default function ListDetail({navigation}) {
+  const isFocused = useIsFocused();
+  const [data, setData] = useState([
+    {
+      id: 1,
+    },
+  ]);
+  const [user, setUser] = useState({});
 
   useEffect(() => {
-    axios
-      .post('https://zavalabs.com/sigadisbekasi/api/transaksi_detail.php', {
-        kode: item.kode,
-      })
-      .then(res => {
-        console.log('detail transaksi', res.data);
-        setData(res.data);
-      });
-  }, []);
+    if (isFocused) {
+      getData('user').then(res => {
+        setUser(res);
+        console.log(res);
 
-  const DataPesanan = () => {
+        axios
+          .post('https://zavalabs.com/sms/api/survey2.php', {
+            id_member: res.id,
+          })
+          .then(res => {
+            console.log(res.data);
+            setData(res.data);
+          });
+      });
+    }
+  }, [isFocused]);
+
+  const MyList = ({lab, val}) => {
     return (
       <View
         style={{
-          backgroundColor: colors.white,
-          marginTop: 10,
+          flexDirection: 'row',
+          marginBottom: 2,
+          borderBottomWidth: 1,
+          borderBottomColor: '#CDCDCD',
+          paddingVertical: 3,
         }}>
-        <Text
-          style={{
-            fontFamily: fonts.secondary[600],
-            backgroundColor: colors.secondary,
-            padding: 10,
-            color: colors.white,
-          }}>
-          {item.status}
-        </Text>
-        <Text
-          style={{
-            fontFamily: fonts.secondary[600],
-            backgroundColor: colors.primary,
-            padding: 10,
-            color: colors.white,
-          }}>
-          {item.kode} - {item.tanggal}
-        </Text>
-        {/* --- */}
-        <View style={{flexDirection: 'row'}}>
-          <View style={{flex: 1, padding: 10}}>
-            <Text
-              style={{
-                fontFamily: fonts.secondary[400],
-                backgroundColor: colors.white,
-
-                color: colors.black,
-              }}>
-              Nama
-            </Text>
-          </View>
-          <View
+        <View style={{flex: 1}}>
+          <Text
             style={{
-              justifyContent: 'center',
-              flex: 2,
+              fontFamily: fonts.secondary[600],
+              fontSize: windowWidth / 35,
+              color: colors.black,
             }}>
-            <Text
-              style={{
-                fontFamily: fonts.secondary[600],
-                backgroundColor: colors.white,
-                fontSize: 14,
-                padding: 10,
-                color: colors.black,
-              }}>
-              {item.nama_pemesan}
-            </Text>
-          </View>
+            {lab}
+          </Text>
         </View>
-        {/* ---- */}
-
-        {/* --- */}
-        <View
-          style={{
-            flexDirection: 'row',
-            borderTopWidth: 1,
-            borderTopColor: '#EEEEEE',
-          }}>
-          <View style={{flex: 1, padding: 10}}>
-            <Text
-              style={{
-                fontFamily: fonts.secondary[400],
-                backgroundColor: colors.white,
-
-                color: colors.black,
-              }}>
-              No Hp
-            </Text>
-          </View>
-          <View
+        <View style={{flex: 2}}>
+          <Text
             style={{
-              justifyContent: 'center',
-              flex: 2,
+              fontFamily: fonts.secondary[400],
+              fontSize: windowWidth / 35,
+              color: colors.black,
             }}>
-            <Text
-              style={{
-                fontFamily: fonts.secondary[600],
-                backgroundColor: colors.white,
-                fontSize: 14,
-                padding: 10,
-                color: colors.black,
-              }}>
-              {item.telepon_pemesan}
-            </Text>
-          </View>
+            {val}
+          </Text>
         </View>
-        {/* ---- */}
-        {/* --- */}
-        <View
-          style={{
-            flexDirection: 'row',
-            borderTopWidth: 1,
-            borderTopColor: '#EEEEEE',
-          }}>
-          <View style={{flex: 1, padding: 10}}>
-            <Text
-              style={{
-                fontFamily: fonts.secondary[400],
-                backgroundColor: colors.white,
-
-                color: colors.black,
-              }}>
-              Alamat
-            </Text>
-          </View>
-          <View
-            style={{
-              justifyContent: 'center',
-              flex: 2,
-            }}>
-            <Text
-              style={{
-                fontFamily: fonts.secondary[600],
-                backgroundColor: colors.white,
-                fontSize: 14,
-                padding: 10,
-                color: colors.black,
-              }}>
-              {item.alamat_pemesan}
-            </Text>
-          </View>
-        </View>
-        {/* ---- */}
       </View>
     );
+  };
+
+  const [ket, setKet] = useState('');
+
+  const filterData = () => {
+    // alert(ket);
+    axios
+      .post('https://zavalabs.com/sms/api/survey.php', {
+        key: ket,
+      })
+      .then(res => {
+        console.log('filter', res.data);
+        setData(res.data);
+      });
   };
 
   return (
     <SafeAreaView
       style={{
         flex: 1,
+        paddingBottom: 10,
+        padding: 10,
       }}>
-      <View style={{padding: 10, flex: 1}}>
-        <DataPesanan />
-        <Text
+      <View
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          marginBottom: 5,
+          borderBottomColor: colors.primary,
+          borderBottomWidth: 1,
+        }}>
+        <TextInput
           style={{
-            fontFamily: fonts.secondary[600],
-            backgroundColor: '#DEDEDE',
-            padding: 10,
-            color: colors.black,
-          }}>
-          DETAIL
-        </Text>
-        <ScrollView>
-          {data.map(item => {
-            return (
+            fontFamily: fonts.secondary[400],
+            fontSize: windowWidth / 20,
+            flex: 1,
+          }}
+          onChangeText={val => setKet(val)}
+          placeholder="masukan kata kunci"
+          onSubmitEditing={filterData}
+        />
+        <TouchableOpacity onPress={filterData}>
+          <Icon type="ionicon" name="search" />
+        </TouchableOpacity>
+      </View>
+      <ScrollView
+        style={{
+          flex: 1,
+        }}>
+        {data.map(item => {
+          return (
+            <View
+              key={item.id}
+              style={{
+                margin: 5,
+                elevation: 2,
+                backgroundColor: colors.white,
+              }}>
               <View
-                style={{
-                  padding: 10,
-                  // borderWidth: 1,
-                  elevation: 1,
-                  marginVertical: 2,
-                  // borderColor: colors.primary,
-                  backgroundColor: colors.white,
+                onPress={() => {
+                  // console.log('cek detail', item);
+                  // navigation.navigate('ListDetail', item);
                 }}>
-                <View style={{flexDirection: 'row'}}>
-                  <View style={{padding: 5}}>
-                    <Image
-                      resizeMode="contain"
-                      source={{uri: item.foto}}
-                      style={{width: 100, aspectRatio: 2}}
-                    />
-                  </View>
-                  <View style={{padding: 5, flex: 1}}>
-                    <Text
-                      style={{
-                        fontFamily: fonts.secondary[600],
-                        fontSize: windowWidth / 30,
-                      }}>
-                      {item.nama_barang}
-                    </Text>
-
-                    {/* <View style={{justifyContent: 'flex-end', flex: 1}}>
+                <View style={{flex: 1, padding: 10}}>
+                  <View style={{flexDirection: 'row'}}>
+                    <View style={{flex: 1}}>
                       <Text
                         style={{
                           fontFamily: fonts.secondary[600],
-                          fontSize: windowWidth / 22,
-                          color: colors.warning,
+                          fontSize: windowWidth / 25,
+                          color: colors.black,
                         }}>
-                        {item.total}
+                        {item.tim}
                       </Text>
-                    </View> */}
+                      <Text
+                        style={{
+                          fontFamily: fonts.secondary[400],
+                          fontSize: windowWidth / 35,
+                          color: colors.black,
+                        }}>
+                        {item.tanggal}
+                      </Text>
+                    </View>
+                    <TouchableOpacity
+                      onPress={() => {
+                        Alert.alert(
+                          'SMS',
+                          'Apakah Anda yakin akan hapus transaksi ini ?',
+                          [
+                            {
+                              text: 'Cancel',
+                              onPress: () => console.log('Cancel Pressed'),
+                              style: 'cancel',
+                            },
+                            {
+                              text: 'OK',
+                              onPress: () => {
+                                axios
+                                  .post(
+                                    'https://zavalabs.com/sms/api/survey_hapus.php',
+                                    {
+                                      id_member: item.id_member,
+                                      id_survey: item.id,
+                                    },
+                                  )
+                                  .then(res2 => {
+                                    console.log(res2);
+                                    axios
+                                      .post(
+                                        'https://zavalabs.com/sms/api/survey2.php',
+                                        {
+                                          id_member: item.id_member,
+                                        },
+                                      )
+                                      .then(res => {
+                                        console.log(res.data);
+                                        setData(res.data);
+                                      });
+                                  });
+                              },
+                            },
+                          ],
+                        );
+                      }}>
+                      <Icon type="ionicon" color={colors.border} name="trash" />
+                    </TouchableOpacity>
                   </View>
+
+                  <MyGap jarak={10} />
+
+                  <MyList lab="Kecamatan" val={item.tanggal} />
+                  <MyList lab="Desa/Kelurahan" val={item.kelurahan} />
+                  <MyList lab="Jalan/Gang" val={item.jalan} />
+                  <MyList
+                    lab="Panjang Jalan"
+                    val={item.jalan_panjang + ' Meter'}
+                  />
+                  <MyList lab="Lebar Jalan" val={item.jalan_lebar + ' Meter'} />
+                  <MyList
+                    lab="Panjang Drainase"
+                    val={item.drainase_panjang + ' Meter'}
+                  />
+                  <MyList
+                    lab="Lebar Drainase"
+                    val={item.drainase_lebar + ' Meter'}
+                  />
+                </View>
+                {/* slider */}
+                <ScrollView horizontal={true}>
+                  <View
+                    style={{margin: 10, borderRadius: 5, overflow: 'hidden'}}>
+                    <Image
+                      source={{uri: item.foto1}}
+                      style={{width: windowWidth - 50, height: 250}}
+                    />
+                  </View>
+                  <View
+                    style={{margin: 10, borderRadius: 5, overflow: 'hidden'}}>
+                    <Image
+                      source={{uri: item.foto2}}
+                      style={{width: windowWidth - 50, height: 250}}
+                    />
+                  </View>
+                  <View
+                    style={{margin: 10, borderRadius: 5, overflow: 'hidden'}}>
+                    <Image
+                      source={{uri: item.foto3}}
+                      style={{width: windowWidth - 50, height: 250}}
+                    />
+                  </View>
+                  <View
+                    style={{margin: 10, borderRadius: 5, overflow: 'hidden'}}>
+                    <Image
+                      source={{uri: item.foto4}}
+                      style={{width: windowWidth - 50, height: 250}}
+                    />
+                  </View>
+                  <View
+                    style={{margin: 10, borderRadius: 5, overflow: 'hidden'}}>
+                    <Image
+                      source={{uri: item.foto5}}
+                      style={{width: windowWidth - 50, height: 250}}
+                    />
+                  </View>
+                </ScrollView>
+                <View>
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate('Komentar', item)}
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'flex-end',
+                      alignItems: 'flex-end',
+                      margin: 10,
+                      // backgroundColor: 'red',
+                      paddingRight: 20,
+                    }}>
+                    <View
+                      style={{
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                      }}>
+                      <Icon
+                        type="ionicon"
+                        size={15}
+                        color={colors.black}
+                        name="chatbox-outline"
+                      />
+                    </View>
+                    <View
+                      style={{
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                      }}>
+                      <Text
+                        style={{
+                          fontFamily: fonts.secondary[400],
+                          fontSize: windowWidth / 30,
+                          left: 5,
+                          color: colors.black,
+                        }}>
+                        Komentar
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
                 </View>
               </View>
-            );
-          })}
-        </ScrollView>
-      </View>
-      {/* <View
-        style={{
-          justifyContent: 'center',
-          alignItems: 'flex-end',
-          padding: 20,
-          backgroundColor: colors.white,
-        }}>
-        <Text
-          style={{
-            fontFamily: fonts.secondary[600],
-            fontSize: windowWidth / 15,
-            color: colors.warning,
-          }}>
-          Rp. {item.total}
-        </Text>
-      </View> */}
+            </View>
+          );
+        })}
+      </ScrollView>
     </SafeAreaView>
   );
 }
 
-const styles = StyleSheet.create({
-  card: {
-    borderWidth: 1,
-    borderColor: colors.primary,
-
-    borderRadius: 10,
-    flex: 1,
-    justifyContent: 'center',
-    height: 80,
-    margin: 5,
-    alignItems: 'center',
-  },
-  title: {
-    fontFamily: fonts.secondary[600],
-    fontSize: 12,
-    textAlign: 'center',
-  },
-  date: {
-    fontFamily: fonts.secondary[400],
-    fontSize: 12,
-    textAlign: 'center',
-  },
-});
+const styles = StyleSheet.create({});

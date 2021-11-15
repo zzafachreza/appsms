@@ -1,5 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {StyleSheet, Text, View, SafeAreaView, Image} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  SafeAreaView,
+  Image,
+  Linking,
+} from 'react-native';
 import {windowWidth, fonts} from '../../utils/fonts';
 import {getData, storeData} from '../../utils/localStorage';
 import {colors} from '../../utils/colors';
@@ -7,16 +14,19 @@ import {MyButton, MyGap} from '../../components';
 import {Icon} from 'react-native-elements';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useIsFocused} from '@react-navigation/native';
+import axios from 'axios';
 
 export default function Account({navigation, route}) {
   const [user, setUser] = useState({});
+  const [com, setCom] = useState({});
   const isFocused = useIsFocused();
+  const [wa, setWA] = useState('');
 
   useEffect(() => {
     if (isFocused) {
       getData('user').then(res => {
         setUser(res);
-        // console.log(user);
+        console.log(user);
       });
     }
   }, [isFocused]);
@@ -30,72 +40,120 @@ export default function Account({navigation, route}) {
   return (
     <SafeAreaView>
       <View style={{padding: 10}}>
-        {/* data detail */}
-        <View>
+        <View
+          style={{
+            justifyContent: 'center',
+            alignItems: 'center',
+            padding: 10,
+          }}>
           <View
             style={{
-              marginVertical: 10,
-              padding: 10,
-              backgroundColor: colors.white,
-              borderRadius: 10,
+              borderRadius: 75,
+
+              justifyContent: 'center',
+              alignItems: 'center',
+              overflow: 'hidden',
             }}>
-            <Text
-              style={{
-                fontFamily: fonts.secondary[600],
-                coloe: colors.black,
-              }}>
-              Nama Lengkap
-            </Text>
-            <Text
-              style={{
-                fontFamily: fonts.secondary[400],
-                coloe: colors.black,
-              }}>
-              {user.nama_lengkap}
-            </Text>
+            <Image
+              source={{
+                uri:
+                  user.foto == ''
+                    ? 'https://zavalabs.com/nogambar.jpg'
+                    : user.foto,
+              }}
+              resizeMode="cover"
+              style={{width: 150, aspectRatio: 1}}
+            />
           </View>
-          <View
+
+          <Text
             style={{
-              marginVertical: 10,
-              padding: 10,
-              backgroundColor: colors.white,
-              borderRadius: 10,
+              fontFamily: fonts.secondary[400],
+              fontSize: windowWidth / 20,
+              color: colors.primary,
             }}>
-            <Text
+            {user.nama_lengkap}
+          </Text>
+        </View>
+        {/* data detail */}
+        <View style={{padding: 10}}>
+          <MyButton
+            onPress={() => navigation.navigate('EditProfile', user)}
+            title="Edit Profile"
+            colorText={colors.white}
+            iconColor={colors.white}
+            warna={colors.primary}
+            Icons="create-outline"
+          />
+
+          <MyGap jarak={10} />
+          <View>
+            <View
               style={{
-                fontFamily: fonts.secondary[600],
-                coloe: colors.black,
+                marginVertical: 5,
+                padding: 10,
+                backgroundColor: colors.white,
+                borderRadius: 10,
               }}>
-              Username
-            </Text>
-            <Text
+              <Text
+                style={{
+                  fontFamily: fonts.secondary[600],
+                  color: colors.black,
+                }}>
+                Username
+              </Text>
+              <Text
+                style={{
+                  fontFamily: fonts.secondary[400],
+                  color: colors.primary,
+                }}>
+                {user.username}
+              </Text>
+            </View>
+
+            <TouchableOpacity
+              onPress={() => navigation.navigate('ListDetail')}
               style={{
-                fontFamily: fonts.secondary[400],
-                coloe: colors.black,
+                marginVertical: 5,
+                padding: 10,
+                borderRadius: 10,
+                backgroundColor: colors.white,
+                flexDirection: 'row',
               }}>
-              {user.username}
-            </Text>
+              <View style={{flex: 1}}>
+                <Text
+                  style={{
+                    fontFamily: fonts.secondary[600],
+                    color: colors.black,
+                  }}>
+                  Survey Saya
+                </Text>
+                <Text
+                  style={{
+                    fontFamily: fonts.secondary[400],
+                    color: colors.primary,
+                  }}>
+                  Lihat Survey Saya
+                </Text>
+              </View>
+              <View>
+                <Icon type="ionicon" name="chevron-forward-outline" />
+              </View>
+            </TouchableOpacity>
           </View>
         </View>
 
-        {/* <MyButton
-          onPress={() => navigation.navigate('EditProfile', user)}
-          title="Edit Profile"
-          colorText={colors.white}
-          iconColor={colors.white}
-          warna={colors.primary}
-          Icons="create-outline"
-        /> */}
-
-        <MyGap jarak={20} />
         {/* button */}
-
-        <MyButton
-          onPress={btnKeluar}
-          title="Keluar"
-          warna={colors.primary}
-          Icons="log-out-outline"
-        />
+        <View style={{padding: 10}}>
+          <MyButton
+            onPress={btnKeluar}
+            title="Keluar"
+            colorText={colors.white}
+            iconColor={colors.white}
+            warna={colors.black}
+            Icons="log-out-outline"
+          />
+        </View>
       </View>
     </SafeAreaView>
   );

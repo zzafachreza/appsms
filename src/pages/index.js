@@ -52,9 +52,13 @@ import DataSanksiDetail from './DataSanksiDetail';
 import DataBeritaDetail from './DataBeritaDetail';
 import LaporanAduan from './LaporanAduan';
 import LaporanInspeksi from './LaporanInspeksi';
+import EditProfile from './EditProfile';
+import Komentar from './Komentar';
 
 export {
   Splash,
+  Komentar,
+  EditProfile,
   DataSanksiDetail,
   LaporanAduan,
   LaporanInspeksi,

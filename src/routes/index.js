@@ -60,6 +60,8 @@ import {
   DataBeritaDetail,
   LaporanAduan,
   LaporanInspeksi,
+  EditProfile,
+  Komentar,
 } from '../pages';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {BottomNavigator} from '../components';
@@ -72,6 +74,7 @@ const MainApp = () => {
   return (
     <Tab.Navigator tabBar={props => <BottomNavigator {...props} />}>
       <Tab.Screen name="Home" component={Home} />
+      <Tab.Screen name="Transaksi" component={ListData} />
       {/* <Tab.Screen name="Kontrak" component={ListData} /> */}
       {/* <Tab.Screen name="Transaksi" component={ListData} />
       <Tab.Screen name="ListRedeem" component={ListRedeem} />
@@ -205,6 +208,29 @@ export default function Router() {
               },
             };
           },
+        }}
+      />
+
+      <Stack.Screen
+        name="Komentar"
+        component={Komentar}
+        options={{
+          headerTitle: 'Komentar',
+          // headerShown: false,
+          headerTintColor: 'white',
+          headerStyle: {
+            backgroundColor: colors.primary,
+            elevation: 0, // remove shadow on Android
+          },
+        }}
+      />
+
+      <Stack.Screen
+        name="EditProfile"
+        component={EditProfile}
+        options={{
+          headerTitle: 'Edit Profile',
+          headerShown: false,
         }}
       />
       <Stack.Screen
@@ -741,7 +767,7 @@ export default function Router() {
         name="ListDetail"
         component={ListDetail}
         options={({route, navigation}) => ({
-          title: 'LIST DETAIL',
+          title: 'SURVEY SAYA',
           headerTintColor: 'white',
           headerStyle: {
             backgroundColor: colors.primary,
@@ -870,7 +896,7 @@ export default function Router() {
         name="DataInspeksiInput"
         component={DataInspeksiInput}
         options={{
-          headerTitle: 'INPUT INSPEKSI IKJ',
+          headerTitle: 'INPUT SURVEY',
           headerTintColor: 'white',
           headerStyle: {
             backgroundColor: colors.primary,

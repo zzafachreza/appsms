@@ -23,6 +23,7 @@ import axios from 'axios';
 import messaging from '@react-native-firebase/messaging';
 import 'intl';
 import 'intl/locale-data/jsonp/en';
+import {color} from 'react-native-reanimated';
 
 const wait = timeout => {
   return new Promise(resolve => {
@@ -170,12 +171,34 @@ export default function Home({navigation}) {
         }>
         <View
           style={{
-            height: windowHeight / 7,
+            height: windowHeight / 10,
             padding: 10,
             backgroundColor: colors.white,
             flexDirection: 'row',
           }}>
-          <View style={{flex: 1, paddingTop: 15}}>
+          <View style={{justifyContent: 'center'}}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('Account')}
+              style={{
+                borderRadius: 25,
+                marginRight: 10,
+                justifyContent: 'center',
+                alignItems: 'center',
+                overflow: 'hidden',
+              }}>
+              <Image
+                source={{
+                  uri:
+                    user.foto == ''
+                      ? 'https://zavalabs.com/nogambar.jpg'
+                      : user.foto,
+                }}
+                resizeMode="cover"
+                style={{width: 50, height: 50}}
+              />
+            </TouchableOpacity>
+          </View>
+          <View style={{flex: 1, justifyContent: 'center'}}>
             <Text
               style={{
                 fontSize: windowWidth / 25,
@@ -187,18 +210,10 @@ export default function Home({navigation}) {
             <Text
               style={{
                 fontSize: windowWidth / 25,
-                color: colors.primary,
-                fontFamily: fonts.secondary[600],
-              }}>
-              {user.nama_lengkap}
-            </Text>
-            <Text
-              style={{
-                fontSize: windowWidth / 25,
                 color: colors.black,
                 fontFamily: fonts.secondary[600],
               }}>
-              Survey Management System
+              {user.nama_lengkap}
             </Text>
           </View>
           <View
@@ -218,9 +233,24 @@ export default function Home({navigation}) {
             {/* <Icon type="ionicon" name="notifications" color={colors.white} /> */}
           </View>
         </View>
-
         {/* bagian untuk search */}
-
+        <View
+          style={{
+            backgroundColor: colors.primary,
+            padding: 5,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          <Text
+            style={{
+              fontSize: windowWidth / 25,
+              color: colors.white,
+              fontFamily: fonts.secondary[600],
+            }}>
+            {' '}
+            Survey Management System
+          </Text>
+        </View>
         <View
           style={{
             // padding: 10,
@@ -231,7 +261,6 @@ export default function Home({navigation}) {
             style={{width: windowWidth, height: windowHeight / 3}}
           />
         </View>
-
         <View
           style={{
             padding: 10,
