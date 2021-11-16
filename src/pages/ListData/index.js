@@ -187,41 +187,80 @@ export default function ListData({navigation}) {
                 </View>
                 {/* slider */}
                 <ScrollView horizontal={true}>
-                  <View
-                    style={{margin: 10, borderRadius: 5, overflow: 'hidden'}}>
-                    <Image
-                      source={{uri: item.foto1}}
-                      style={{width: windowWidth - 50, height: 250}}
-                    />
-                  </View>
-                  <View
-                    style={{margin: 10, borderRadius: 5, overflow: 'hidden'}}>
-                    <Image
-                      source={{uri: item.foto2}}
-                      style={{width: windowWidth - 50, height: 250}}
-                    />
-                  </View>
-                  <View
-                    style={{margin: 10, borderRadius: 5, overflow: 'hidden'}}>
-                    <Image
-                      source={{uri: item.foto3}}
-                      style={{width: windowWidth - 50, height: 250}}
-                    />
-                  </View>
-                  <View
-                    style={{margin: 10, borderRadius: 5, overflow: 'hidden'}}>
-                    <Image
-                      source={{uri: item.foto4}}
-                      style={{width: windowWidth - 50, height: 250}}
-                    />
-                  </View>
-                  <View
-                    style={{margin: 10, borderRadius: 5, overflow: 'hidden'}}>
-                    <Image
-                      source={{uri: item.foto5}}
-                      style={{width: windowWidth - 50, height: 250}}
-                    />
-                  </View>
+                  {item.jml1 > 36 && (
+                    <TouchableOpacity
+                      onPress={() =>
+                        navigation.navigate('DataBerita', {
+                          foto: item.foto1,
+                        })
+                      }
+                      style={{margin: 10, borderRadius: 5, overflow: 'hidden'}}>
+                      <Image
+                        source={{uri: item.foto1}}
+                        style={{width: windowWidth - 50, height: 250}}
+                      />
+                    </TouchableOpacity>
+                  )}
+
+                  {item.jml2 > 36 && (
+                    <TouchableOpacity
+                      onPress={() =>
+                        navigation.navigate('DataBerita', {
+                          foto: item.foto2,
+                        })
+                      }
+                      style={{margin: 10, borderRadius: 5, overflow: 'hidden'}}>
+                      <Image
+                        source={{uri: item.foto2}}
+                        style={{width: windowWidth - 50, height: 250}}
+                      />
+                    </TouchableOpacity>
+                  )}
+
+                  {item.jml3 > 36 && (
+                    <TouchableOpacity
+                      onPress={() =>
+                        navigation.navigate('DataBerita', {
+                          foto: item.foto3,
+                        })
+                      }
+                      style={{margin: 10, borderRadius: 5, overflow: 'hidden'}}>
+                      <Image
+                        source={{uri: item.foto3}}
+                        style={{width: windowWidth - 50, height: 250}}
+                      />
+                    </TouchableOpacity>
+                  )}
+
+                  {item.jml4 > 36 && (
+                    <TouchableOpacity
+                      onPress={() =>
+                        navigation.navigate('DataBerita', {
+                          foto: item.foto4,
+                        })
+                      }
+                      style={{margin: 10, borderRadius: 5, overflow: 'hidden'}}>
+                      <Image
+                        source={{uri: item.foto4}}
+                        style={{width: windowWidth - 50, height: 250}}
+                      />
+                    </TouchableOpacity>
+                  )}
+
+                  {item.jml5 > 36 && (
+                    <TouchableOpacity
+                      onPress={() =>
+                        navigation.navigate('DataBerita', {
+                          foto: item.foto5,
+                        })
+                      }
+                      style={{margin: 10, borderRadius: 5, overflow: 'hidden'}}>
+                      <Image
+                        source={{uri: item.foto5}}
+                        style={{width: windowWidth - 50, height: 250}}
+                      />
+                    </TouchableOpacity>
+                  )}
                 </ScrollView>
                 <View>
                   <TouchableOpacity

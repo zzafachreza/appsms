@@ -230,41 +230,55 @@ export default function ListDetail({navigation}) {
                 </View>
                 {/* slider */}
                 <ScrollView horizontal={true}>
-                  <View
-                    style={{margin: 10, borderRadius: 5, overflow: 'hidden'}}>
-                    <Image
-                      source={{uri: item.foto1}}
-                      style={{width: windowWidth - 50, height: 250}}
-                    />
-                  </View>
-                  <View
-                    style={{margin: 10, borderRadius: 5, overflow: 'hidden'}}>
-                    <Image
-                      source={{uri: item.foto2}}
-                      style={{width: windowWidth - 50, height: 250}}
-                    />
-                  </View>
-                  <View
-                    style={{margin: 10, borderRadius: 5, overflow: 'hidden'}}>
-                    <Image
-                      source={{uri: item.foto3}}
-                      style={{width: windowWidth - 50, height: 250}}
-                    />
-                  </View>
-                  <View
-                    style={{margin: 10, borderRadius: 5, overflow: 'hidden'}}>
-                    <Image
-                      source={{uri: item.foto4}}
-                      style={{width: windowWidth - 50, height: 250}}
-                    />
-                  </View>
-                  <View
-                    style={{margin: 10, borderRadius: 5, overflow: 'hidden'}}>
-                    <Image
-                      source={{uri: item.foto5}}
-                      style={{width: windowWidth - 50, height: 250}}
-                    />
-                  </View>
+                  {item.jml1 > 36 && (
+                    <View
+                      style={{margin: 10, borderRadius: 5, overflow: 'hidden'}}>
+                      <Image
+                        source={{uri: item.foto1}}
+                        style={{width: windowWidth - 50, height: 250}}
+                      />
+                    </View>
+                  )}
+
+                  {item.jml2 > 36 && (
+                    <View
+                      style={{margin: 10, borderRadius: 5, overflow: 'hidden'}}>
+                      <Image
+                        source={{uri: item.foto2}}
+                        style={{width: windowWidth - 50, height: 250}}
+                      />
+                    </View>
+                  )}
+
+                  {item.jml3 > 36 && (
+                    <View
+                      style={{margin: 10, borderRadius: 5, overflow: 'hidden'}}>
+                      <Image
+                        source={{uri: item.foto3}}
+                        style={{width: windowWidth - 50, height: 250}}
+                      />
+                    </View>
+                  )}
+
+                  {item.jml4 > 36 && (
+                    <View
+                      style={{margin: 10, borderRadius: 5, overflow: 'hidden'}}>
+                      <Image
+                        source={{uri: item.foto4}}
+                        style={{width: windowWidth - 50, height: 250}}
+                      />
+                    </View>
+                  )}
+
+                  {item.jml5 > 36 && (
+                    <View
+                      style={{margin: 10, borderRadius: 5, overflow: 'hidden'}}>
+                      <Image
+                        source={{uri: item.foto5}}
+                        style={{width: windowWidth - 50, height: 250}}
+                      />
+                    </View>
+                  )}
                 </ScrollView>
                 <View>
                   <TouchableOpacity

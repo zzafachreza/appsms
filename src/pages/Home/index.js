@@ -92,11 +92,11 @@ export default function Home({navigation}) {
             style={{
               fontFamily: fonts.secondary[400],
               color: colors.white,
-              fontSize: windowWidth / 10,
+              fontSize: windowWidth / 15,
               textAlign: 'center',
               // marginHorizontal: 10,
             }}>
-            MULAI SURVEI
+            INPUT DATA
           </Text>
           <Text
             style={{
@@ -106,7 +106,7 @@ export default function Home({navigation}) {
               textAlign: 'center',
               // marginHorizontal: 10,
             }}>
-            SEKARANG
+            SURVEY
           </Text>
         </View>
       </TouchableOpacity>
