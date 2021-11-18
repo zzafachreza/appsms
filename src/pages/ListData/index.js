@@ -9,6 +9,7 @@ import {
   Alert,
   FlatList,
   TextInput,
+  TouchableWithoutFeedback,
 } from 'react-native';
 import {tan} from 'react-native-reanimated';
 import {colors} from '../../utils/colors';
@@ -21,6 +22,7 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 import {MyButton, MyGap, MyInput} from '../../components';
 import {useIsFocused} from '@react-navigation/native';
 import {Icon} from 'react-native-elements';
+import FastImage from 'react-native-fast-image';
 
 export default function ListData({navigation}) {
   const isFocused = useIsFocused();
@@ -42,6 +44,7 @@ export default function ListData({navigation}) {
             id_member: res.id,
           })
           .then(res => {
+            setKet('');
             console.log(res.data);
             setData(res.data);
           });
@@ -118,6 +121,7 @@ export default function ListData({navigation}) {
             fontSize: windowWidth / 20,
             flex: 1,
           }}
+          value={ket}
           onChangeText={val => setKet(val)}
           placeholder="masukan kata kunci"
           onSubmitEditing={filterData}
@@ -168,7 +172,7 @@ export default function ListData({navigation}) {
 
                   <MyGap jarak={10} />
 
-                  <MyList lab="Kecamatan" val={item.tanggal} />
+                  <MyList lab="Kecamatan" val={item.kecamatan} />
                   <MyList lab="Desa/Kelurahan" val={item.kelurahan} />
                   <MyList lab="Jalan/Gang" val={item.jalan} />
                   <MyList
@@ -186,80 +190,113 @@ export default function ListData({navigation}) {
                   />
                 </View>
                 {/* slider */}
-                <ScrollView horizontal={true}>
+                <ScrollView
+                  showsHorizontalScrollIndicator={false}
+                  horizontal={true}
+                  pagingEnabled={true}>
                   {item.jml1 > 36 && (
-                    <TouchableOpacity
+                    <TouchableWithoutFeedback
                       onPress={() =>
                         navigation.navigate('DataBerita', {
                           foto: item.foto1,
                         })
                       }
-                      style={{margin: 10, borderRadius: 5, overflow: 'hidden'}}>
-                      <Image
-                        source={{uri: item.foto1}}
-                        style={{width: windowWidth - 50, height: 250}}
+                      style={{
+                        backgroundColor: 'red',
+                        margin: 0,
+                        borderRadius: 5,
+                        overflow: 'hidden',
+                      }}>
+                      <FastImage
+                        style={{width: windowWidth - 20, height: 250}}
+                        source={{
+                          uri: item.foto1,
+                          headers: {Authorization: 'someAuthToken'},
+                          priority: FastImage.priority.normal,
+                        }}
+                        resizeMode={FastImage.resizeMode.contain}
                       />
-                    </TouchableOpacity>
+                    </TouchableWithoutFeedback>
                   )}
 
                   {item.jml2 > 36 && (
-                    <TouchableOpacity
+                    <TouchableWithoutFeedback
                       onPress={() =>
                         navigation.navigate('DataBerita', {
                           foto: item.foto2,
                         })
                       }
                       style={{margin: 10, borderRadius: 5, overflow: 'hidden'}}>
-                      <Image
-                        source={{uri: item.foto2}}
-                        style={{width: windowWidth - 50, height: 250}}
+                      <FastImage
+                        style={{width: windowWidth - 30, height: 250}}
+                        source={{
+                          uri: item.foto2,
+                          headers: {Authorization: 'someAuthToken'},
+                          priority: FastImage.priority.normal,
+                        }}
+                        resizeMode={FastImage.resizeMode.contain}
                       />
-                    </TouchableOpacity>
+                    </TouchableWithoutFeedback>
                   )}
 
                   {item.jml3 > 36 && (
-                    <TouchableOpacity
+                    <TouchableWithoutFeedback
                       onPress={() =>
                         navigation.navigate('DataBerita', {
                           foto: item.foto3,
                         })
                       }
                       style={{margin: 10, borderRadius: 5, overflow: 'hidden'}}>
-                      <Image
-                        source={{uri: item.foto3}}
+                      <FastImage
                         style={{width: windowWidth - 50, height: 250}}
+                        source={{
+                          uri: item.foto3,
+                          headers: {Authorization: 'someAuthToken'},
+                          priority: FastImage.priority.normal,
+                        }}
+                        resizeMode={FastImage.resizeMode.contain}
                       />
-                    </TouchableOpacity>
+                    </TouchableWithoutFeedback>
                   )}
 
                   {item.jml4 > 36 && (
-                    <TouchableOpacity
+                    <TouchableWithoutFeedback
                       onPress={() =>
                         navigation.navigate('DataBerita', {
                           foto: item.foto4,
                         })
                       }
                       style={{margin: 10, borderRadius: 5, overflow: 'hidden'}}>
-                      <Image
-                        source={{uri: item.foto4}}
+                      <FastImage
                         style={{width: windowWidth - 50, height: 250}}
+                        source={{
+                          uri: item.foto4,
+                          headers: {Authorization: 'someAuthToken'},
+                          priority: FastImage.priority.normal,
+                        }}
+                        resizeMode={FastImage.resizeMode.contain}
                       />
-                    </TouchableOpacity>
+                    </TouchableWithoutFeedback>
                   )}
 
                   {item.jml5 > 36 && (
-                    <TouchableOpacity
+                    <TouchableWithoutFeedback
                       onPress={() =>
                         navigation.navigate('DataBerita', {
                           foto: item.foto5,
                         })
                       }
                       style={{margin: 10, borderRadius: 5, overflow: 'hidden'}}>
-                      <Image
-                        source={{uri: item.foto5}}
+                      <FastImage
                         style={{width: windowWidth - 50, height: 250}}
+                        source={{
+                          uri: item.foto5,
+                          headers: {Authorization: 'someAuthToken'},
+                          priority: FastImage.priority.normal,
+                        }}
+                        resizeMode={FastImage.resizeMode.contain}
                       />
-                    </TouchableOpacity>
+                    </TouchableWithoutFeedback>
                   )}
                 </ScrollView>
                 <View>

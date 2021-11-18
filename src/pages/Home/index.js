@@ -43,20 +43,12 @@ export default function Home({navigation}) {
   const getDataPoint = () => {
     getData('user').then(res => {
       setUser(res);
-      axios
-        .post('https://zavalabs.com/sininja/api/point.php', {
-          id_member: res.id,
-        })
-        .then(respoint => {
-          setPoint(respoint.data);
-          console.log('get apoint', respoint.data);
-        });
 
       getData('token').then(res => {
         console.log('data token,', res);
         setToken(res.token);
         axios
-          .post('https://zavalabs.com/sininja/api/update_token.php', {
+          .post('https://zavalabs.com/sms/api/update_token.php', {
             id_member: user.id,
             token: res.token,
           })
